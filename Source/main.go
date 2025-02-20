@@ -105,6 +105,8 @@ func main() {
 			fmt.Println("Betrag von", value, "=", result)
 			stack.Push(strconv.FormatFloat(result, 'f', 2, 64))
 
+			infix = "abs( " + infix + " )"
+
 		case "++":
 		case "**":
 		}
@@ -120,4 +122,11 @@ func updateInfix(infix string, first string, second string, operator string) str
 		infix = "( " + second + " " + operator + " " + first + " )"
 	} 
 	return infix
+}
+
+// updates the latex notation
+func updateLatex(latex string, first string, second string, operator string) string{
+
+
+	return latex 
 }
