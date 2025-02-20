@@ -29,8 +29,9 @@ func main() {
 		stack.Push(input)
 
 		switch input {
+
 		case "+":
-			first, second, firstFloat, secondFloat := getTopTwoValuesAsFloat(stack)
+			first, second, firstFloat, secondFloat := getTopTwoValuesAsFloat(&stack)
 
 			result := secondFloat + firstFloat
 
@@ -39,9 +40,13 @@ func main() {
 
 			// update infix notation
 			infix = updateInfix(infix, first, second, "+")
-			
+
+			for len(stack.items) > 0 {
+				fmt.Println(stack.Pop())
+			}
+
 		case "-":
-			first, second, firstFloat, secondFloat := getTopTwoValuesAsFloat(stack)
+			first, second, firstFloat, secondFloat := getTopTwoValuesAsFloat(&stack)
 
 			result := secondFloat - firstFloat
 
@@ -52,7 +57,7 @@ func main() {
 			infix = updateInfix(infix, first, second, "-")
 
 		case "*":
-			first, second, firstFloat, secondFloat := getTopTwoValuesAsFloat(stack)
+			first, second, firstFloat, secondFloat := getTopTwoValuesAsFloat(&stack)
 
 			result := firstFloat * secondFloat
 
@@ -62,11 +67,8 @@ func main() {
 			// update infix notation
 			infix = updateInfix(infix, first, second, "*")
 
-
-			
-
 		case "/":
-			first, second, firstFloat, secondFloat := getTopTwoValuesAsFloat(stack)
+			first, second, firstFloat, secondFloat := getTopTwoValuesAsFloat(&stack)
 
 			result := secondFloat / firstFloat
 
@@ -76,9 +78,8 @@ func main() {
 			// update infix notation
 			infix = updateInfix(infix, first, second, "/")
 
-
 		case "^":
-			_, _, firstFloat, secondFloat := getTopTwoValuesAsFloat(stack)
+			_, _, firstFloat, secondFloat := getTopTwoValuesAsFloat(&stack)
 
 			result := math.Pow(secondFloat, firstFloat)
 
@@ -86,13 +87,13 @@ func main() {
 			stack.Push(strconv.FormatFloat(result, 'f', 2, 64))
 
 		case "sqrt":
-			value := getTopValueAsFloat(stack)
+			value := getTopValueAsFloat(&stack)
 			result := math.Sqrt(value)
 			fmt.Println("Es wird die Quadratwurzel von", value, "gezogen: ", result)
 			stack.Push(strconv.FormatFloat(result, 'f', 2, 64))
 
 		case "log":
-			value := getTopValueAsFloat(stack)
+			value := getTopValueAsFloat(&stack)
 			result := math.Log10(value)
 			fmt.Println("Es wird der Logarithmus von", value, "zur Basis 10 berechnet: ", result)
 			stack.Push(strconv.FormatFloat(result, 'f', 2, 64))
@@ -100,33 +101,63 @@ func main() {
 		case "!":
 
 		case "abs":
-			value := getTopValueAsFloat(stack)
+			value := getTopValueAsFloat(&stack)
 			result := math.Abs(value)
 			fmt.Println("Betrag von", value, "=", result)
 			stack.Push(strconv.FormatFloat(result, 'f', 2, 64))
 
 			infix = "abs( " + infix + " )"
 
-		case "++":
 		case "**":
+			result := multiplyAll(&stack)
+			fmt.Println("Multiplikation aller Werte auf dem Stack = ", result)
+			stack.Push(strconv.FormatFloat(result, 'f', 2, 64))
+
+		case "++":
+			result := addAll(&stack)
+			fmt.Println("Addition aller Werte auf dem Stack = ", result)
+			stack.Push(strconv.FormatFloat(result, 'f', 2, 64))
 		}
 	}
 }
 
 // updates the infix notation
-func updateInfix(infix string, first string, second string, operator string) string{
-	if infix != ""{
-		infix = infix +  " " + operator + " " + first + " )" 
+func updateInfix(infix string, first string, second string, operator string) string {
+	if infix != "" {
+		infix = infix + " " + operator + " " + first + " )"
 	}
-	if infix == ""{
+	if infix == "" {
 		infix = "( " + second + " " + operator + " " + first + " )"
-	} 
+	}
 	return infix
 }
 
+func addAll(stack *Stack) float64 {
+	var result float64 = 0
+	//remove the operator from the stack
+	stack.Pop()
+	for len(stack.items)>0{
+		first, _ := stack.Pop()
+		firstFloat, _ := strconv.ParseFloat(first, 64)
+		result = result + firstFloat
+	}
+	return result
+}
+
+func multiplyAll(stack* Stack) float64{
+	var result float64 = 1
+	//remove the operator from the stack
+	stack.Pop()
+	for len(stack.items)>0{
+		first, _ := stack.Pop()
+		firstFloat, _ := strconv.ParseFloat(first, 64)
+		result = result * firstFloat
+	}
+	return result
+}
+
 // updates the latex notation
-func updateLatex(latex string, first string, second string, operator string) string{
+func updateLatex(latex string, first string, second string, operator string) string {
 
-
-	return latex 
+	return latex
 }

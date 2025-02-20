@@ -25,7 +25,7 @@ func (s *Stack) Pop() (string, error) {
 	return item, nil
 }
 
-func getTopTwoValuesAsFloat(stack Stack) (string, string, float64, float64) {
+func getTopTwoValuesAsFloat(stack *Stack) (string, string, float64, float64) {
 	stack.Pop()
 	first, _ := stack.Pop()
 	second, _ := stack.Pop()
@@ -36,7 +36,7 @@ func getTopTwoValuesAsFloat(stack Stack) (string, string, float64, float64) {
 	return first, second, firstFloat, secondFloat
 }
 
-func getTopValueAsFloat(stack Stack) float64{
+func getTopValueAsFloat(stack *Stack) float64{
 	stack.Pop()
 	value, _ := stack.Pop()
 	valueFloat, _ := strconv.ParseFloat(value, 64)
