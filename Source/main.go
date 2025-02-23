@@ -41,10 +41,6 @@ func main() {
 			// update infix notation
 			infix = updateInfix(infix, first, second, "+")
 
-			for len(stack.items) > 0 {
-				fmt.Println(stack.Pop())
-			}
-
 		case "-":
 			first, second, firstFloat, secondFloat := getTopTwoValuesAsFloat(&stack)
 
@@ -136,7 +132,7 @@ func addAll(stack *Stack) float64 {
 	var result float64 = 0
 	//remove the operator from the stack
 	stack.Pop()
-	for len(stack.items)>0{
+	for len(stack.items) > 0 {
 		first, _ := stack.Pop()
 		firstFloat, _ := strconv.ParseFloat(first, 64)
 		result = result + firstFloat
@@ -144,11 +140,11 @@ func addAll(stack *Stack) float64 {
 	return result
 }
 
-func multiplyAll(stack* Stack) float64{
+func multiplyAll(stack *Stack) float64 {
 	var result float64 = 1
 	//remove the operator from the stack
 	stack.Pop()
-	for len(stack.items)>0{
+	for len(stack.items) > 0 {
 		first, _ := stack.Pop()
 		firstFloat, _ := strconv.ParseFloat(first, 64)
 		result = result * firstFloat
